@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  html {
+    @apply text-primary;
+  }
+
+  .main-container {
+    @apply bg-secondary text-primary;
+  }
+
+  .default-button {
+    @apply bg-transparent border-[1px] border-primary rounded-lg hover:bg-secondary hover:bg-opacity-50 text-primary transition-all duration-150 px-3 py-1;
+  }
+  .default-input {
+    @apply bg-transparent border-[1px] border-primary rounded-lg text-primary px-3 py-1;
+  }
+}
