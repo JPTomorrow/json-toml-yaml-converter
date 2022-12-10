@@ -1,9 +1,8 @@
 import FileUpload from "@/components/FileUpload";
-import WelcomeWidget from "@/components/WelcomeWidget";
 
 function App() {
   return (
-    <div className="flex justify-center items-center w-screen h-screen bg-[#1d1d1d]">
+    <div className="flex justify-center items-center w-screen min-h-screen h-auto bg-[#1d1d1d]">
       <div className="flex-col items-center">
         <div className="text-center mb-5">
           <h1 className="text-3xl">JSON | TOML | YAML</h1>
