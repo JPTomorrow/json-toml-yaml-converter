@@ -1,5 +1,6 @@
 import { invoke } from "@tauri-apps/api/tauri";
 import { open } from "@tauri-apps/api/dialog";
+import { writeTextFile } from "@tauri-apps/api/fs";
 import { useState } from "react";
 import { AiOutlineFileText } from "react-icons/ai";
 
@@ -37,17 +38,17 @@ const FileUpload = ({ text }: { text?: string }) => {
         const json = converted["json"];
         const toml = converted["toml"];
         const yaml = converted["yaml"];
+
         if (json) {
-          // console.log(`json: ${json}`);
           setJsonView(json);
         }
+
         if (toml) {
-          // console.log(`toml: ${toml}`);
-          setFileTextView({ data: toml });
+          setTomlView(toml);
         }
+
         if (yaml) {
-          // console.log(`yaml: ${yaml}`);
-          setFileTextView({ data: yaml });
+          setYamlView(yaml);
         }
       })
       .catch((err) => {
@@ -56,6 +57,10 @@ const FileUpload = ({ text }: { text?: string }) => {
           err: err,
         });
       });
+
+    if (jsonView !== "") await writeTextFile(path, jsonView);
+    if (tomlView !== "") await writeTextFile(path, tomlView);
+    if (yamlView !== "") await writeTextFile(path, yamlView);
   };
   return (
     <>
