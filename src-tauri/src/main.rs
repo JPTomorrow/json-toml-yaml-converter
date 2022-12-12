@@ -3,6 +3,7 @@
     windows_subsystem = "windows"
 )]
 
+use serde_json::to_string;
 use tauri::api::file;
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
@@ -55,7 +56,11 @@ fn generate_other_file_formats(file_path: &str) -> Result<String, String> {
                 Ok(yaml) => yaml,
                 Err(err) => return Err(err),
             };
-            Ok(format!("{{ \"json\": {}, \"yaml\": {} }}", json, yaml))
+            let res = serde_json::json!({
+                "json": json,
+                "yaml": yaml,
+            });
+            Ok(format!("{}", res.to_string()))
         }
         FileType::JSON => {
             let toml = match json_to_toml(&file_text) {
@@ -66,7 +71,11 @@ fn generate_other_file_formats(file_path: &str) -> Result<String, String> {
                 Ok(yaml) => yaml,
                 Err(err) => return Err(err),
             };
-            Ok(format!("{{ \"yaml\": {}, \"toml\": {} }}", toml, yaml))
+            let res = serde_json::json!({
+                "toml": toml,
+                "yaml": yaml,
+            });
+            Ok(format!("{}", res.to_string()))
         }
         FileType::YAML => {
             let toml = match yaml_to_toml(&file_text) {
@@ -77,7 +86,11 @@ fn generate_other_file_formats(file_path: &str) -> Result<String, String> {
                 Ok(json) => json,
                 Err(err) => return Err(err),
             };
-            Ok(format!("{{ \"toml\": {}, \"json\": {} }}", toml, json))
+            let res = serde_json::json!({
+                "toml": toml,
+                "json": json,
+            });
+            Ok(format!("{}", res.to_string()))
         }
     }
 }
@@ -147,9 +160,10 @@ fn yaml_to_json(file_text: &str) -> Result<String, String> {
 
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![greet])
-        .invoke_handler(tauri::generate_handler![generate_other_file_formats])
-        .invoke_handler(tauri::generate_handler![get_text_from_file])
+        .invoke_handler(tauri::generate_handler![
+            get_text_from_file,
+            generate_other_file_formats
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

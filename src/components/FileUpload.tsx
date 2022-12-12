@@ -10,6 +10,9 @@ type FileTextView = {
 
 const FileUpload = ({ text }: { text?: string }) => {
   const [fileTextView, setFileTextView] = useState<FileTextView>({});
+  const [jsonView, setJsonView] = useState<string>(null);
+  const [tomlView, setTomlView] = useState<string>(null);
+  const [yamlView, setYamlView] = useState<string>(null);
   const [path, setPath] = useState<string>("");
 
   const handleFileSelection = async (e: any) => {
@@ -26,13 +29,26 @@ const FileUpload = ({ text }: { text?: string }) => {
   };
 
   const handleConversion = async () => {
-    await invoke("parse_file", {
+    await invoke("generate_other_file_formats", {
       filePath: path,
     })
       .then((res: string) => {
-        // const converted = JSON.parse(res);
-        console.log(`converted: ${res}`);
-        // setFileTextView({ data: converted });
+        const converted = JSON.parse(res);
+        const json = converted["json"];
+        const toml = converted["toml"];
+        const yaml = converted["yaml"];
+        if (json) {
+          // console.log(`json: ${json}`);
+          setJsonView(json);
+        }
+        if (toml) {
+          // console.log(`toml: ${toml}`);
+          setFileTextView({ data: toml });
+        }
+        if (yaml) {
+          // console.log(`yaml: ${yaml}`);
+          setFileTextView({ data: yaml });
+        }
       })
       .catch((err) => {
         setFileTextView({
@@ -64,9 +80,16 @@ const FileUpload = ({ text }: { text?: string }) => {
         </>
       ) : (
         <div className="text-3xl text-red-500 mt-5 text-center">
-          {fileTextView.err}
+          {fileTextView.err ? <p>{fileTextView.err}</p> : null}
         </div>
       )}
+      <div className="inline-flex">
+        {jsonView ? (
+          <p className="overflow-auto scroll-smooth w-[500px]  max-h-[200px]  mx-auto mt-5 break-words whitespace-pre-wrap border-primary border-[1px] rounded-xl p-5">
+            {jsonView}
+          </p>
+        ) : null}
+      </div>
     </>
   );
 };
