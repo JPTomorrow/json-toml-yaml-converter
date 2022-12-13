@@ -4,7 +4,13 @@
 
 @layer components {
   html {
-    @apply text-primary;
+    @apply text-primary bg-[#1d1d1d] overflow-x-hidden;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  html::-webkit-scrollbar {
+    display: none;
   }
 
   .main-container {
@@ -16,5 +22,29 @@
   }
   .default-input {
     @apply bg-transparent border-[1px] border-primary rounded-lg text-primary px-3 py-1;
+  }
+
+  .input-text-views {
+    @apply overflow-auto scroll-smooth w-[500px]  max-h-[200px]  mx-auto mt-5 break-words whitespace-pre-wrap border-primary border-[1px] rounded-xl p-5;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .input-text-views::-webkit-scrollbar {
+    display: none;
+  }
+
+  .converted-text-views {
+    @apply overflow-auto scroll-smooth  max-h-[200px]  mx-auto mt-5 break-words whitespace-pre-wrap border-primary border-[1px] rounded-xl p-5;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .converted-text-views::-webkit-scrollbar {
+    display: none;
+  }
+
+  .text-view-header {
+    @apply text-2xl underline mb-3 text-green-300;
   }
 }

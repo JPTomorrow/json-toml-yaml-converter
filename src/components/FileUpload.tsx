@@ -1,7 +1,7 @@
 import { invoke } from "@tauri-apps/api/tauri";
 import { open } from "@tauri-apps/api/dialog";
 import { writeTextFile } from "@tauri-apps/api/fs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiOutlineFileText } from "react-icons/ai";
 
 type FileTextView = {
@@ -18,9 +18,10 @@ const FileUpload = ({ text }: { text?: string }) => {
 
   const handleFileSelection = async (e: any) => {
     const potentialPath = (await open({ multiple: false })) as string;
+    if (!potentialPath) return;
     setPath(potentialPath);
 
-    await invoke("get_text_from_file", { filePath: path })
+    await invoke("get_text_from_file", { filePath: potentialPath })
       .then((preview) => {
         setFileTextView({ data: preview as string });
       })
@@ -58,9 +59,17 @@ const FileUpload = ({ text }: { text?: string }) => {
         });
       });
 
-    if (jsonView !== "") await writeTextFile(path, jsonView);
-    if (tomlView !== "") await writeTextFile(path, tomlView);
-    if (yamlView !== "") await writeTextFile(path, yamlView);
+    var lastIndex = path.lastIndexOf("/");
+    var fileName = (ext: string) =>
+      path.slice(lastIndex + 1, path.length).split(".")[0] + "." + ext;
+    var newPath = path.slice(0, lastIndex + 1);
+
+    if (jsonView !== "")
+      await writeTextFile(newPath + fileName("json"), jsonView);
+    if (tomlView !== "")
+      await writeTextFile(newPath + fileName("toml"), tomlView);
+    if (yamlView !== "")
+      await writeTextFile(newPath + fileName("yaml"), yamlView);
   };
   return (
     <>
@@ -71,10 +80,8 @@ const FileUpload = ({ text }: { text?: string }) => {
       </label>
       {fileTextView.data ? (
         <>
-          <div className=" overflow-auto scroll-smooth w-[500px]  max-h-[200px]  mx-auto mt-5 break-words whitespace-pre-wrap border-primary border-[1px] rounded-xl p-5">
-            <p className="text-2xl underline mb-3 text-green-300">
-              Input File Sample
-            </p>
+          <div className="input-text-views">
+            <p className="text-view-header">Input File</p>
             <p className="text-sm"> Path: {path.slice(0, 50) + "..."}</p>
             <br />
             <p>{fileTextView.data}</p>
@@ -88,10 +95,24 @@ const FileUpload = ({ text }: { text?: string }) => {
           {fileTextView.err ? <p>{fileTextView.err}</p> : null}
         </div>
       )}
-      <div className="inline-flex">
+      <br />
+      <div className="inline-flex gap-5">
         {jsonView ? (
-          <p className="overflow-auto scroll-smooth w-[500px]  max-h-[200px]  mx-auto mt-5 break-words whitespace-pre-wrap border-primary border-[1px] rounded-xl p-5">
+          <p className="converted-text-views">
+            <p className="text-view-header">JSON Output</p>
             {jsonView}
+          </p>
+        ) : null}
+        {tomlView ? (
+          <p className="converted-text-views">
+            <p className="text-view-header">TOML Output</p>
+            {tomlView}
+          </p>
+        ) : null}
+        {yamlView ? (
+          <p className="converted-text-views">
+            <p className="text-view-header">YAML Output</p>
+            {yamlView}
           </p>
         ) : null}
       </div>
