@@ -3,14 +3,7 @@
     windows_subsystem = "windows"
 )]
 
-use serde_json::to_string;
 use tauri::api::file;
-
-// Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-#[tauri::command]
-fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
-}
 
 enum FileType {
     TOML,

@@ -1,7 +1,7 @@
 import { invoke } from "@tauri-apps/api/tauri";
 import { open } from "@tauri-apps/api/dialog";
 import { writeTextFile } from "@tauri-apps/api/fs";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AiOutlineFileText } from "react-icons/ai";
 
 type FileTextView = {
@@ -58,18 +58,17 @@ const FileUpload = ({ text }: { text?: string }) => {
           err: err,
         });
       });
+  };
 
+  const writeOutputFiles = async () => {
     var lastIndex = path.lastIndexOf("/");
     var fileName = (ext: string) =>
       path.slice(lastIndex + 1, path.length).split(".")[0] + "." + ext;
     var newPath = path.slice(0, lastIndex + 1);
 
-    if (jsonView !== "")
-      await writeTextFile(newPath + fileName("json"), jsonView);
-    if (tomlView !== "")
-      await writeTextFile(newPath + fileName("toml"), tomlView);
-    if (yamlView !== "")
-      await writeTextFile(newPath + fileName("yaml"), yamlView);
+    if (jsonView) await writeTextFile(newPath + fileName("json"), jsonView);
+    if (tomlView) await writeTextFile(newPath + fileName("toml"), tomlView);
+    if (yamlView) await writeTextFile(newPath + fileName("yaml"), yamlView);
   };
   return (
     <>
@@ -116,6 +115,12 @@ const FileUpload = ({ text }: { text?: string }) => {
           </p>
         ) : null}
       </div>
+      <br />
+      {jsonView || yamlView || tomlView ? (
+        <button onClick={writeOutputFiles} className="default-button mt-5">
+          Save Files
+        </button>
+      ) : null}
     </>
   );
 };
