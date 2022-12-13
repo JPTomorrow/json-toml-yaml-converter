@@ -7,5 +7,5 @@ npm run tauri-dev
 ```
 ## Final Build
 ```
-npm run build
+npm run tauri-build
 ```
