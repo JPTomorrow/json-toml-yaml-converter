@@ -1,11 +1,12 @@
 {
-  "name": "tauri-desktop-app",
+  "name": "json-toml-yaml-converter",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
     "dev": "next dev -p 1420",
-    "build": "tauri build",
-    "tauri-dev": "tauri dev"
+    "tauri-build": "tauri build",
+    "tauri-dev": "tauri dev",
+    "build": "next build && next export -o dist"
   },
   "dependencies": {
     "@tauri-apps/api": "^1.1.0",

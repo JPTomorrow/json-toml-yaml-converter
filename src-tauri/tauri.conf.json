@@ -7,8 +7,8 @@
     "withGlobalTauri": false
   },
   "package": {
-    "productName": "tauri-desktop-app",
-    "version": "0.0.0"
+    "productName": "json-toml-yaml Converter",
+    "version": "1.0.0"
   },
   "tauri": {
     "allowlist": {
@@ -42,8 +42,8 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
-      "longDescription": "",
+      "identifier": "json.toml.yaml.converter",
+      "longDescription": "A program that converts either JSON, TOML, or YAML files, and converts it two the other two files types.",
       "macOS": {
         "entitlements": null,
         "exceptionDomain": "",
@@ -71,7 +71,7 @@
         "fullscreen": false,
         "height": 600,
         "resizable": true,
-        "title": "tauri-desktop-app",
+        "title": "JSON | TOML | YAML Converter",
         "width": 800
       }
     ]

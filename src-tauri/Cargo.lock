@@ -1186,6 +1186,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "json-toml-yaml-converter"
+version = "1.0.0"
+dependencies = [
+ "serde",
+ "serde_json",
+ "tauri",
+ "tauri-build",
+ "tsu",
+]
+
+[[package]]
 name = "kuchiki"
 version = "0.8.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2451,17 +2462,6 @@ dependencies = [
  "time",
  "uuid 1.2.2",
  "walkdir",
-]
-
-[[package]]
-name = "tauri-desktop-app"
-version = "0.0.0"
-dependencies = [
- "serde",
- "serde_json",
- "tauri",
- "tauri-build",
- "tsu",
 ]
 
 [[package]]
